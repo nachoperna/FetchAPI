@@ -1,0 +1,68 @@
+package views
+
+templ Home() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>FetchAPI</title>
+			<link href="../static/index.css" rel="stylesheet"/>
+			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+		</head>
+		<body>
+			<header>
+				<h1 id="header-title">Fetching de Usuarios</h1>
+				<nav>
+					<label
+						class="selected"
+						hx-get="/users"
+						hx-target=".grid"
+						hx-swap="innerHTML"
+						hx-on:request_error="alert('Hubo un error con la solicitud');"
+						onclick="changeSelected(this)"
+					>Usuarios</label>
+					<label
+						hx-get="/products"
+						hx-target=".grid"
+						hx-swap="innerHTML"
+						hx-on:request_error="alert('Hubo un error con la solicitud');"
+						onclick="changeSelected(this)"
+					>Productos</label>
+					<script>
+				            function changeSelected(elem){
+                                          document.querySelector('.selected').classList.remove('selected');
+                                          elem.classList.add('selected');
+                                    }   
+				      </script>
+				</nav>
+				<input
+					type="text"
+					placeholder="Buscar..."
+					oninput="searchUser(this.value);"
+				/>
+				<script>
+                              function searchUser(content){
+                                    content = content.toLowerCase();
+                                    const items = document.querySelectorAll('.card-info');
+                                    items.forEach(item => {
+                                          const content = item.textContent.toLowerCase();
+                                          if (content.includes(content)) {
+                                                item.style.display = '';
+                                          }else {
+                                                item.style.display = 'none';
+                                          }  
+                                    });
+                              }
+                        </script>
+			</header>
+			<div
+				class="grid"
+				id="grid"
+				hx-get="/users"
+				hx-trigger="load"
+				hx-swap="innerHTML"
+			></div>
+		</body>
+	</html>
+}

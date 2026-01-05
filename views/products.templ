@@ -1,0 +1,38 @@
+package views
+
+import "FetchAPI/datos"
+
+templ ListProducts(products []datos.Product) {
+	<h1 id="header-title" hx-swap-oob="true">Fetching de Productos</h1>
+	for _, product := range products {
+		<div class="card product-card">
+			<div class="card-info" id="card-info">
+				<div class="product-image">
+					<img src={ product.Image }/>
+				</div>
+				<div class="product-info">
+					<label id="title">{ product.Title }</label>
+					<div class="price-container">
+						<label id="price">$ { product.Price } ARS</label>
+						<label id="category">{ product.Category }</label>
+					</div>
+					<div class="product-description" onclick="showDescription(this);">
+						<label>Descripcion</label>
+						<svg id="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path></svg>
+					</div>
+					<div class="description-text text-oculto">
+						<p>{ product.Description }</p>
+					</div>
+					<script>
+                                    function showDescription(elem){
+                                          const container = elem.closest('.product-info').querySelector('.description-text');
+                                          container.classList.toggle('text-oculto');
+                                          setTimeout(() => {}, 300);
+                                          elem.closest('.product-info').querySelector('#arrow').classList.toggle('change-icon');
+                                    }
+                              </script>
+				</div>
+			</div>
+		</div>
+	}
+}
